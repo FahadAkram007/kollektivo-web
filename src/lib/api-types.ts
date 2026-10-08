@@ -628,6 +628,86 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/employer/companies/{employerId}/employees": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["EmployeesController_list_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/employer/companies/{employerId}/invites": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["EmployeesController_invite_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/employer/companies/{employerId}/invites/bulk": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["EmployeesController_inviteMany_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/employer/companies/{employerId}/invites/{inviteId}/resend": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["EmployeesController_resend_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/employer/companies/{employerId}/invites/{inviteId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["EmployeesController_cancel_v1"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1074,6 +1154,47 @@ export interface components {
             firstName: string;
             lastName: string;
             companies: components["schemas"]["EmployerCompanyDto"][];
+        };
+        EmployeeRowDto: {
+            /** @enum {string} */
+            kind: "employee" | "invite";
+            /** @description Employee id or invite id (see kind) */
+            id: string;
+            firstName: string;
+            lastName: string;
+            email: string;
+            personnelNumber: string | null;
+            /** @example 5000 */
+            monthlyAmountCents: number;
+            /** @enum {string} */
+            status: "invited" | "invite_expired" | "active" | "leaving" | "ended" | "blocked";
+            /** @description YYYY-MM-DD */
+            startedOn: string | null;
+            /** @description Last day of the benefit (leavers), YYYY-MM-DD */
+            benefitEndsOn: string | null;
+            /** @description Invites: when the code expires */
+            inviteExpiresAt: string | null;
+        };
+        InviteEmployeeDto: {
+            /** @example max.mustermann@firma.de */
+            email: string;
+            firstName: string;
+            lastName: string;
+            /** @example 10427 */
+            personnelNumber?: string;
+            /**
+             * @description Monthly credit in cents, 0 – 5000 (default 5000)
+             * @example 5000
+             */
+            monthlyAmountCents?: number;
+        };
+        BulkInviteDto: {
+            people: components["schemas"]["InviteEmployeeDto"][];
+        };
+        BulkInviteResultDto: {
+            email: string;
+            /** @enum {string} */
+            result: "invited" | "already_member" | "already_invited" | "failed";
         };
     };
     responses: never;
@@ -2103,6 +2224,115 @@ export interface operations {
                 content: {
                     "application/json": components["schemas"]["EmployerMeDto"];
                 };
+            };
+        };
+    };
+    EmployeesController_list_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                employerId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EmployeeRowDto"][];
+                };
+            };
+        };
+    };
+    EmployeesController_invite_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                employerId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["InviteEmployeeDto"];
+            };
+        };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    EmployeesController_inviteMany_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                employerId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["BulkInviteDto"];
+            };
+        };
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["BulkInviteResultDto"][];
+                };
+            };
+        };
+    };
+    EmployeesController_resend_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                employerId: string;
+                inviteId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    EmployeesController_cancel_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                employerId: string;
+                inviteId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };

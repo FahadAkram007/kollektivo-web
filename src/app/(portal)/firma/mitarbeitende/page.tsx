@@ -1,15 +1,15 @@
 import type { Metadata } from 'next';
 
 import { PageHeader } from '@/components/ui/page-header';
+import { EmployeesScreen } from '@/features/employees/employees-screen';
 
 export const metadata: Metadata = { title: 'Mitarbeitende' };
 
-// TODO(hr-panel): built in the next steps of the HR panel plan.
-export default function Page() {
+export default function EmployeesPage() {
   return (
     <>
       <PageHeader title="Mitarbeitende" />
-      <p className="px-4 text-ink-muted md:px-8">Folgt in Kürze.</p>
+      <EmployeesScreen />
     </>
   );
 }
