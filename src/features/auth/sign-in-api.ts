@@ -24,8 +24,12 @@ export function signInErrorMessage(error: unknown): string {
       return 'Der Code ist falsch. Bitte prüfen Sie die E-Mail.';
     case 'sign_in_code_expired':
       return 'Der Code ist abgelaufen. Bitte fordern Sie einen neuen an.';
-    case 'too_many_attempts':
-      return 'Zu viele Versuche. Bitte warten Sie kurz und versuchen Sie es erneut.';
+    case 'too_many_attempts': {
+      const minutes = error.details.retryInMinutes;
+      return typeof minutes === 'number'
+        ? `Zu viele Codes angefordert. Bitte versuchen Sie es in ${minutes} ${minutes === 1 ? 'Minute' : 'Minuten'} erneut.`
+        : 'Zu viele Versuche. Bitte warten Sie kurz und versuchen Sie es erneut.';
+    }
     case 'validation_failed':
       return 'Bitte geben Sie eine gültige E-Mail-Adresse ein.';
     default:

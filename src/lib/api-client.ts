@@ -23,6 +23,8 @@ export class ApiError extends Error {
     readonly code: string,
     message: string,
     readonly status: number,
+    /** Extra fields of the error, e.g. attemptsLeft. */
+    readonly details: Record<string, unknown> = {},
   ) {
     super(message);
   }
@@ -31,10 +33,12 @@ export class ApiError extends Error {
 /** Returns the data of an openapi-fetch result or throws an [ApiError]; for use in TanStack Query. */
 export function unwrap<T>(result: { data?: T; error?: unknown; response: Response }): T {
   if (result.error === undefined) return result.data as T;
-  const body = result.error as { error?: { code?: string; message?: string } };
+  const body = result.error as { error?: { code?: string; message?: string } & Record<string, unknown> };
+  const { code, message, ...details } = body.error ?? {};
   throw new ApiError(
-    body.error?.code ?? 'unknown',
-    body.error?.message ?? `Request failed (${result.response.status})`,
+    code ?? 'unknown',
+    message ?? `Request failed (${result.response.status})`,
     result.response.status,
+    details,
   );
 }
