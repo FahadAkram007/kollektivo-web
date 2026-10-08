@@ -420,6 +420,70 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/partner/shops/{partnerId}/profile": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["ShopProfileController_get_v1"];
+        put: operations["ShopProfileController_update_v1"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/partner/shops/{partnerId}/locations/{locationId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["ShopProfileController_updateLocation_v1"];
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/partner/shops/{partnerId}/deal": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["ShopProfileController_setDeal_v1"];
+        post?: never;
+        delete: operations["ShopProfileController_removeDeal_v1"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/partner/shops/{partnerId}/photo": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["ShopProfileController_setPhoto_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/shops": {
         parameters: {
             query?: never;
@@ -823,6 +887,65 @@ export interface components {
             items: components["schemas"]["PartnerPaymentRowDto"][];
             /** @description Pass as "before" for older payments; empty at the end */
             nextBefore: string | null;
+        };
+        ShopDealDto: {
+            /** @example 10 % auf alle Kuchen */
+            title: string;
+            endsAt: string;
+        };
+        ShopProfileLocationDto: {
+            id: string;
+            name: string;
+            street: string;
+            postalCode: string;
+            city: string;
+            phone: string | null;
+            openingHours: components["schemas"]["OpeningPeriodDto"][];
+        };
+        ShopProfileDto: {
+            partnerId: string;
+            name: string;
+            /** @example bakery */
+            category: string;
+            description: string;
+            website: string | null;
+            imageUrl: string | null;
+            deal: components["schemas"]["ShopDealDto"] | null;
+            locations: components["schemas"]["ShopProfileLocationDto"][];
+        };
+        UpdateShopProfileDto: {
+            description: string;
+            /**
+             * @description Empty to remove
+             * @example www.backstube-lindner.de
+             */
+            website?: string;
+        };
+        OpeningPeriodInputDto: {
+            /** @description 1 = Monday … 7 = Sunday */
+            weekday: number;
+            /** @description Minutes after midnight */
+            opensAt: number;
+            /** @description Minutes after midnight, after opensAt */
+            closesAt: number;
+        };
+        UpdateShopLocationDto: {
+            /**
+             * @description Empty to remove
+             * @example 03573 123456
+             */
+            phone?: string;
+            /** @description Up to 3 periods per day (e.g. lunch break) */
+            openingHours: components["schemas"]["OpeningPeriodInputDto"][];
+        };
+        SetShopDealDto: {
+            /** @example 10 % auf alle Kuchen */
+            title: string;
+            /**
+             * @description Last day (German time); default in one year
+             * @example 2026-12-31
+             */
+            endsOn?: string;
         };
         FavouritesDto: {
             /** @description Location ids */
@@ -1523,6 +1646,142 @@ export interface operations {
                 content: {
                     "text/csv": string;
                 };
+            };
+        };
+    };
+    ShopProfileController_get_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                partnerId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["ShopProfileDto"];
+                };
+            };
+        };
+    };
+    ShopProfileController_update_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                partnerId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateShopProfileDto"];
+            };
+        };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ShopProfileController_updateLocation_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                partnerId: string;
+                locationId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateShopLocationDto"];
+            };
+        };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ShopProfileController_setDeal_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                partnerId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SetShopDealDto"];
+            };
+        };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ShopProfileController_removeDeal_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                partnerId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    ShopProfileController_setPhoto_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                partnerId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "multipart/form-data": {
+                    /** Format: binary */
+                    photo?: string;
+                };
+            };
+        };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
