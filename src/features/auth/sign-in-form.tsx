@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import { Logo } from '@/components/ui/logo';
@@ -20,9 +20,19 @@ export function SignInForm() {
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
+  function reset() {
+    setStep('email');
+    setCode('');
+    setError(null);
+  }
+
   useEffect(() => {
     if (state.status === 'signed-in') router.replace('/');
   }, [state.status, router]);
+
+  // Next.js keeps visited pages in memory (React Activity): clear the form when the page is left, so signing
+  // out starts again at the email step instead of showing the old code.
+  useLayoutEffect(() => reset, []);
 
   async function run(action: () => Promise<void>) {
     setBusy(true);
@@ -96,11 +106,7 @@ export function SignInForm() {
           <button
             type="button"
             className="text-sm text-brand-purple underline-offset-2 hover:underline"
-            onClick={() => {
-              setStep('email');
-              setCode('');
-              setError(null);
-            }}
+            onClick={reset}
           >
             Andere E-Mail-Adresse
           </button>
