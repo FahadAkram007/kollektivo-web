@@ -1,15 +1,15 @@
 import type { Metadata } from 'next';
 
 import { PageHeader } from '@/components/ui/page-header';
+import { PaymentsScreen } from '@/features/payments/payments-screen';
 
 export const metadata: Metadata = { title: 'Zahlungen' };
 
-// TODO(portal): built in the next steps of the shop portal plan.
-export default function Page() {
+export default function PaymentsPage() {
   return (
     <>
       <PageHeader title="Zahlungen" />
-      <p className="text-ink-muted px-4 md:px-8">Folgt in Kürze.</p>
+      <PaymentsScreen />
     </>
   );
 }

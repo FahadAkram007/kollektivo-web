@@ -388,6 +388,38 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/partner/shops/{partnerId}/payments": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["PartnerPaymentsController_list_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/partner/shops/{partnerId}/payments/csv": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["PartnerPaymentsController_csv_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/shops": {
         parameters: {
             query?: never;
@@ -751,6 +783,46 @@ export interface components {
             firstName: string;
             lastName: string;
             shops: components["schemas"]["PartnerShopDto"][];
+        };
+        PartnerPaymentTotalsDto: {
+            count: number;
+            /** @description Paid with KollektivO credit */
+            amountCents: number;
+            purchaseTotalCents: number;
+            commissionCents: number;
+        };
+        PartnerPaymentRowDto: {
+            id: string;
+            /** @example DA7-5330 */
+            reference: string;
+            createdAt: string;
+            locationId: string;
+            /**
+             * @description Code from the till or the printed QR sticker
+             * @enum {string}
+             */
+            method: "till" | "printed_qr";
+            /** @enum {string} */
+            status: "awaiting_shop" | "completed" | "declined" | "timed_out" | "refunded" | "partially_refunded";
+            /** @description Paid with KollektivO credit */
+            amountCents: number;
+            /** @description Whole purchase; the difference was paid at the till */
+            purchaseTotalCents: number;
+            /**
+             * @description Basis points, 200 = 2 %
+             * @example 200
+             */
+            commissionBps: number;
+            /** @description Only for completed payments, else 0 */
+            commissionCents: number;
+        };
+        PartnerPaymentsPageDto: {
+            from: string;
+            to: string;
+            totals: components["schemas"]["PartnerPaymentTotalsDto"];
+            items: components["schemas"]["PartnerPaymentRowDto"][];
+            /** @description Pass as "before" for older payments; empty at the end */
+            nextBefore: string | null;
         };
         FavouritesDto: {
             /** @description Location ids */
@@ -1389,6 +1461,67 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["PartnerMeDto"];
+                };
+            };
+        };
+    };
+    PartnerPaymentsController_list_v1: {
+        parameters: {
+            query?: {
+                /** @description First day (German time), default today */
+                from?: string;
+                /** @description Last day (German time), default = from */
+                to?: string;
+                /** @description Only payments at this location */
+                locationId?: string;
+                /** @description nextBefore from the previous page (list only, not CSV) */
+                before?: string;
+            };
+            header?: never;
+            path: {
+                partnerId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PartnerPaymentsPageDto"];
+                };
+            };
+        };
+    };
+    PartnerPaymentsController_csv_v1: {
+        parameters: {
+            query?: {
+                /** @description First day (German time), default today */
+                from?: string;
+                /** @description Last day (German time), default = from */
+                to?: string;
+                /** @description Only payments at this location */
+                locationId?: string;
+                /** @description nextBefore from the previous page (list only, not CSV) */
+                before?: string;
+            };
+            header?: never;
+            path: {
+                partnerId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description CSV file */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/csv": string;
                 };
             };
         };
