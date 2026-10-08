@@ -308,6 +308,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/partner/payment-requests/{id}/cancel": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["ShopPaymentsController_cancelRequest_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/partner/shops/{partnerId}/pending-payments": {
         parameters: {
             query?: never;
@@ -519,10 +535,10 @@ export interface components {
             /** @enum {string} */
             status: "active" | "ended" | "blocked";
             /** @description Set while leaving: last day the balance can be used (YYYY-MM-DD). */
-            benefitEndsAt: Record<string, never> | null;
+            benefitEndsAt: string | null;
             /** @description Employer's workplace; distances are measured from here without location sharing. */
-            workplaceLatitude: Record<string, never> | null;
-            workplaceLongitude: Record<string, never> | null;
+            workplaceLatitude: number | null;
+            workplaceLongitude: number | null;
         };
         SessionDto: {
             /** @description Exchange with Firebase signInWithCustomToken, then send the ID token as Bearer. */
@@ -576,7 +592,7 @@ export interface components {
             /** @description When the remaining balance expires: end of the month in Germany. */
             expiresAt: string;
             /** @description When the next monthly credit arrives; empty if no more credits (leaving or ended). */
-            nextCreditAt: Record<string, never> | null;
+            nextCreditAt: string | null;
         };
         WalletTransactionDto: {
             id: string;
@@ -589,15 +605,15 @@ export interface components {
              * @example K7Q-4821
              */
             reference: string;
-            shopId: Record<string, never> | null;
-            shopName: Record<string, never> | null;
+            shopId: string | null;
+            shopName: string | null;
             /** @description Category slug of the shop, e.g. "bakery". */
-            shopCategory: Record<string, never> | null;
+            shopCategory: string | null;
         };
         WalletTransactionsPageDto: {
             items: components["schemas"]["WalletTransactionDto"][];
             /** @description Pass as "before" to load older transactions; empty when there are none. */
-            nextBefore: Record<string, never> | null;
+            nextBefore: string | null;
         };
         LookupCodeDto: {
             /**
@@ -641,10 +657,10 @@ export interface components {
             latitude: number;
             longitude: number;
             description: string;
-            imageUrl: Record<string, never> | null;
+            imageUrl: string | null;
             openingHours: components["schemas"]["OpeningPeriodDto"][];
             /** @description Current deal, e.g. "10 % auf alle Kuchen" */
-            offer: Record<string, never> | null;
+            offer: string | null;
         };
         LookupResultDto: {
             /**
@@ -701,6 +717,8 @@ export interface components {
             /** @description Full purchase; the difference is paid at the till */
             purchaseTotalCents: number;
             createdAt: string;
+            /** @description Printed-QR payments waiting for the shop: answer before this time */
+            acceptUntil?: string;
         };
         PaymentRequestStatusDto: {
             /** @enum {string} */
@@ -714,9 +732,9 @@ export interface components {
             postalCode: string;
             city: string;
             /** @description The till ("Kasse") for payment requests */
-            tillId: Record<string, never> | null;
+            tillId: string | null;
             /** @description Text of the printed shop QR code, e.g. "kollektivo:shop:…" */
-            printedQrPayload: Record<string, never> | null;
+            printedQrPayload: string | null;
         };
         PartnerShopDto: {
             partnerId: string;
@@ -746,7 +764,7 @@ export interface components {
             endsAt: string;
             /** @description Higher is shown first */
             priority: number;
-            headline: Record<string, never> | null;
+            headline: string | null;
         };
         CreateTicketDto: {
             /** @enum {string} */
@@ -1269,9 +1287,33 @@ export interface operations {
             };
         };
     };
-    ShopPaymentsController_pending_v1: {
+    ShopPaymentsController_cancelRequest_v1: {
         parameters: {
             query?: never;
+            header?: never;
+            path: {
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["PaymentRequestStatusDto"];
+                };
+            };
+        };
+    };
+    ShopPaymentsController_pending_v1: {
+        parameters: {
+            query?: {
+                /** @description Only payments at this location */
+                locationId?: string;
+            };
             header?: never;
             path: {
                 partnerId: string;
