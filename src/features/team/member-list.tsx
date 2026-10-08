@@ -7,21 +7,21 @@ import { Button } from '@/components/ui/button';
 import { SectionCard } from '@/components/ui/section-card';
 import { ApiError } from '@/lib/api-client';
 
-import { removeMember, teamQuery, type TeamMember } from './team-api';
+import { roleLabel, type TeamConfig, type TeamMember } from './team-config';
 
-export function MemberList({ partnerId, members }: { partnerId: string; members: TeamMember[] }) {
+export function MemberList({ config, members }: { config: TeamConfig; members: TeamMember[] }) {
   return (
-    <SectionCard title="Team" description="Entfernte Personen verlieren den Zugang sofort.">
+    <SectionCard title="Team" description={config.listDescription}>
       <ul className="flex flex-col divide-y divide-line">
         {members.map((member) => (
-          <MemberRow key={member.userId} partnerId={partnerId} member={member} />
+          <MemberRow key={member.userId} config={config} member={member} />
         ))}
       </ul>
     </SectionCard>
   );
 }
 
-function MemberRow({ partnerId, member }: { partnerId: string; member: TeamMember }) {
+function MemberRow({ config, member }: { config: TeamConfig; member: TeamMember }) {
   const queryClient = useQueryClient();
   const [confirming, setConfirming] = useState(false);
   const [busy, setBusy] = useState(false);
@@ -32,12 +32,12 @@ function MemberRow({ partnerId, member }: { partnerId: string; member: TeamMembe
     setBusy(true);
     setError(null);
     try {
-      await removeMember(partnerId, member.userId);
-      await queryClient.invalidateQueries({ queryKey: teamQuery(partnerId).queryKey });
+      await config.remove(member.userId);
+      await queryClient.invalidateQueries({ queryKey: config.queryKey });
     } catch (caught) {
       setError(
         caught instanceof ApiError && caught.code === 'last_owner'
-          ? 'Der Laden braucht mindestens eine/n Inhaber/in.'
+          ? config.lastOwnerText
           : 'Entfernen fehlgeschlagen. Bitte erneut versuchen.',
       );
       setBusy(false);
@@ -53,9 +53,7 @@ function MemberRow({ partnerId, member }: { partnerId: string; member: TeamMembe
         </p>
         <p className="truncate text-sm text-ink-muted">{member.email}</p>
         <p className="mt-1 flex gap-2 text-xs">
-          <span className="rounded-full bg-surface px-2 py-0.5">
-            {member.role === 'owner' ? 'Inhaber/in' : 'Kasse'}
-          </span>
+          <span className="rounded-full bg-surface px-2 py-0.5">{roleLabel(config, member.role)}</span>
           <span
             className={`rounded-full px-2 py-0.5 ${member.hasSignedIn ? 'bg-green-50 text-success' : 'bg-amber-50'}`}
           >

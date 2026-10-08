@@ -8,13 +8,12 @@ import { SectionCard } from '@/components/ui/section-card';
 import { TextField } from '@/components/ui/text-field';
 import { ApiError } from '@/lib/api-client';
 
-import { addMember, teamQuery, type NewMember } from './team-api';
+import type { NewTeamMember, TeamConfig } from './team-config';
 
-const EMPTY: NewMember = { email: '', firstName: '', lastName: '', role: 'staff' };
-
-export function InviteForm({ partnerId }: { partnerId: string }) {
+export function InviteForm({ config }: { config: TeamConfig }) {
   const queryClient = useQueryClient();
-  const [member, setMember] = useState<NewMember>(EMPTY);
+  const empty: NewTeamMember = { email: '', firstName: '', lastName: '', role: config.roles[0].value };
+  const [member, setMember] = useState<NewTeamMember>(empty);
   const [busy, setBusy] = useState(false);
   const [result, setResult] = useState<{ ok: boolean; text: string } | null>(null);
 
@@ -30,10 +29,10 @@ export function InviteForm({ partnerId }: { partnerId: string }) {
     setBusy(true);
     setResult(null);
     try {
-      await addMember(partnerId, { ...member, email: member.email.trim() });
-      await queryClient.invalidateQueries({ queryKey: teamQuery(partnerId).queryKey });
+      await config.add({ ...member, email: member.email.trim() });
+      await queryClient.invalidateQueries({ queryKey: config.queryKey });
       setResult({ ok: true, text: `Einladung an ${member.email.trim()} gesendet.` });
-      setMember(EMPTY);
+      setMember(empty);
     } catch (error) {
       setResult({ ok: false, text: inviteError(error) });
     } finally {
@@ -60,18 +59,26 @@ export function InviteForm({ partnerId }: { partnerId: string }) {
         </div>
         <fieldset className="flex flex-col gap-2 sm:col-span-2">
           <legend className="mb-1 text-sm font-medium">Rolle</legend>
-          <RoleOption
-            checked={member.role === 'staff'}
-            onSelect={() => setMember({ ...member, role: 'staff' })}
-            title="Kasse"
-            text="Zahlungen an der Kasse und die Zahlungsliste."
-          />
-          <RoleOption
-            checked={member.role === 'owner'}
-            onSelect={() => setMember({ ...member, role: 'owner' })}
-            title="Inhaber/in"
-            text="Alles, auch Export, Profil, Team und QR-Code."
-          />
+          {config.roles.map((role) => (
+            <label
+              key={role.value}
+              className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 ${
+                member.role === role.value ? 'border-brand-purple bg-surface' : 'border-line'
+              }`}
+            >
+              <input
+                type="radio"
+                name="role"
+                checked={member.role === role.value}
+                onChange={() => setMember({ ...member, role: role.value })}
+                className="mt-1 accent-brand-purple"
+              />
+              <span>
+                <span className="block font-medium">{role.label}</span>
+                <span className="text-sm text-ink-muted">{role.description}</span>
+              </span>
+            </label>
+          ))}
         </fieldset>
         <div className="flex flex-wrap items-center gap-4 sm:col-span-2">
           <Button type="submit" disabled={busy}>
@@ -85,30 +92,6 @@ export function InviteForm({ partnerId }: { partnerId: string }) {
         </div>
       </form>
     </SectionCard>
-  );
-}
-
-function RoleOption({
-  checked,
-  onSelect,
-  title,
-  text,
-}: {
-  checked: boolean;
-  onSelect: () => void;
-  title: string;
-  text: string;
-}) {
-  return (
-    <label
-      className={`flex cursor-pointer items-start gap-3 rounded-xl border p-3 ${checked ? 'border-brand-purple bg-surface' : 'border-line'}`}
-    >
-      <input type="radio" name="role" checked={checked} onChange={onSelect} className="mt-1 accent-brand-purple" />
-      <span>
-        <span className="block font-medium">{title}</span>
-        <span className="text-sm text-ink-muted">{text}</span>
-      </span>
-    </label>
   );
 }
 

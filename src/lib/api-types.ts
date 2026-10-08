@@ -804,6 +804,38 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/employer/companies/{employerId}/members": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["HrTeamController_list_v1"];
+        put?: never;
+        post: operations["HrTeamController_add_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/employer/companies/{employerId}/members/{userId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["HrTeamController_remove_v1"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1339,6 +1371,30 @@ export interface components {
         MonthDetailDto: {
             summary: components["schemas"]["MonthSummaryDto"];
             employees: components["schemas"]["MonthEmployeeDto"][];
+        };
+        HrMemberDto: {
+            userId: string;
+            email: string;
+            firstName: string;
+            lastName: string;
+            /** @enum {string} */
+            role: "owner" | "hr";
+            addedAt: string;
+            /** @description Has signed in at least once */
+            hasSignedIn: boolean;
+            /** @description The signed-in person */
+            isYou: boolean;
+        };
+        AddHrMemberDto: {
+            /** @example personal@firma.de */
+            email: string;
+            firstName: string;
+            lastName: string;
+            /**
+             * @description hr = employees and overview; owner = also the HR team
+             * @enum {string}
+             */
+            role: "owner" | "hr";
         };
     };
     responses: never;
@@ -2651,6 +2707,70 @@ export interface operations {
                 content: {
                     "text/csv": string;
                 };
+            };
+        };
+    };
+    HrTeamController_list_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                employerId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["HrMemberDto"][];
+                };
+            };
+        };
+    };
+    HrTeamController_add_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                employerId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AddHrMemberDto"];
+            };
+        };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    HrTeamController_remove_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                employerId: string;
+                userId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
