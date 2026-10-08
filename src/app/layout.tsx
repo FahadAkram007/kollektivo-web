@@ -14,8 +14,8 @@ const poppins = localFont({
 });
 
 export const metadata: Metadata = {
-  title: { default: 'KollektivO Shop-Portal', template: '%s · KollektivO' },
-  description: 'Zahlungen mit dem KollektivO-Guthaben annehmen.',
+  title: { default: 'KollektivO Portal', template: '%s · KollektivO' },
+  description: 'Zahlungen annehmen und Mitarbeitende verwalten.',
   robots: { index: false },
 };
 

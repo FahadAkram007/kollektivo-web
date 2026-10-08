@@ -612,6 +612,22 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/employer/me": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["EmployersController_me_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -634,10 +650,10 @@ export interface components {
             /** @description Set when signing up with an employer invite. */
             inviteCode?: string;
             /**
-             * @description Which app signs in: the employee app (default) or the shop portal. Each only accepts its own people.
+             * @description Which app signs in: the employee app (default), the shop portal only (shop), or the web portal for shops and employers (portal). Each only accepts its own people.
              * @enum {string}
              */
-            app?: "employee" | "shop";
+            app?: "employee" | "shop" | "portal";
         };
         VerifySignInCodeDto: {
             /** @example max.mustermann@muster-gmbh.example */
@@ -645,10 +661,10 @@ export interface components {
             /** @description Set when signing up with an employer invite. */
             inviteCode?: string;
             /**
-             * @description Which app signs in: the employee app (default) or the shop portal. Each only accepts its own people.
+             * @description Which app signs in: the employee app (default), the shop portal only (shop), or the web portal for shops and employers (portal). Each only accepts its own people.
              * @enum {string}
              */
-            app?: "employee" | "shop";
+            app?: "employee" | "shop" | "portal";
             /** @example 246813 */
             code: string;
         };
@@ -787,6 +803,10 @@ export interface components {
             description: string;
             imageUrl: string | null;
             openingHours: components["schemas"]["OpeningPeriodDto"][];
+            /** @example 03573 123456 */
+            phone: string | null;
+            /** @example https://www.backstube-lindner.de/ */
+            website: string | null;
             /** @description Current deal, e.g. "10 % auf alle Kuchen" */
             offer: string | null;
         };
@@ -1033,6 +1053,27 @@ export interface components {
         TicketCreatedDto: {
             /** @example KO-482913 */
             number: string;
+        };
+        EmployerCompanyDto: {
+            employerId: string;
+            name: string;
+            /**
+             * @description owner = also manages the HR team
+             * @enum {string}
+             */
+            role: "owner" | "hr";
+            /** @enum {string} */
+            status: "onboarding" | "active" | "ended";
+            street: string;
+            postalCode: string;
+            city: string;
+        };
+        EmployerMeDto: {
+            id: string;
+            email: string;
+            firstName: string;
+            lastName: string;
+            companies: components["schemas"]["EmployerCompanyDto"][];
         };
     };
     responses: never;
@@ -2042,6 +2083,25 @@ export interface operations {
                 };
                 content: {
                     "application/json": components["schemas"]["TicketCreatedDto"];
+                };
+            };
+        };
+    };
+    EmployersController_me_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["EmployerMeDto"];
                 };
             };
         };

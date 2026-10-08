@@ -3,10 +3,10 @@ import type { MetadataRoute } from 'next';
 /** Installable on the counter tablet or phone ("Zum Startbildschirm hinzufügen"). */
 export default function manifest(): MetadataRoute.Manifest {
   return {
-    name: 'KollektivO Shop-Portal',
-    short_name: 'KollektivO Kasse',
-    description: 'Zahlungen mit dem KollektivO-Guthaben annehmen.',
-    start_url: '/kasse',
+    name: 'KollektivO Portal',
+    short_name: 'KollektivO',
+    description: 'Zahlungen annehmen und Mitarbeitende verwalten.',
+    start_url: '/',
     display: 'standalone',
     background_color: '#ffffff',
     theme_color: '#8F306E',

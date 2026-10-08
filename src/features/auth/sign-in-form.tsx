@@ -21,7 +21,7 @@ export function SignInForm() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    if (state.status === 'signed-in') router.replace('/kasse');
+    if (state.status === 'signed-in') router.replace('/');
   }, [state.status, router]);
 
   async function run(action: () => Promise<void>) {
@@ -53,7 +53,7 @@ export function SignInForm() {
     >
       <div className="flex flex-col items-center gap-3">
         <Logo height={36} />
-        <h1 className="text-xl font-bold">Shop-Portal</h1>
+        <h1 className="text-xl font-bold">Händler- & Firmenportal</h1>
       </div>
 
       {step === 'email' ? (

@@ -1,6 +1,6 @@
-import { PortalShell } from '@/features/portal/portal-shell';
+import { SessionGate } from '@/features/portal/session-gate';
 
-/** Every page behind sign-in: navigation, the current shop location, owner-only pages. */
+/** Every page behind sign-in: checks the session and loads the person's shops and companies. */
 export default function PortalLayout({ children }: LayoutProps<'/'>) {
-  return <PortalShell>{children}</PortalShell>;
+  return <SessionGate>{children}</SessionGate>;
 }
