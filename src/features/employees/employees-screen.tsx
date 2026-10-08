@@ -8,6 +8,7 @@ import { Button, buttonClass } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
 import { useCurrentCompany } from '@/features/company/current-company';
 
+import { EmployeeDialog } from './employee-dialog';
 import { countByFilter, FILTER_LABELS, filterEmployees, type EmployeeFilter } from './employee-filter';
 import { EmployeeList } from './employee-list';
 import { employeesQuery } from './employees-api';
@@ -18,6 +19,7 @@ export function EmployeesScreen() {
   const employees = useQuery(employeesQuery(company.employerId));
   const [filter, setFilter] = useState<EmployeeFilter>('all');
   const [search, setSearch] = useState('');
+  const [editingId, setEditingId] = useState<string | null>(null);
 
   if (employees.isPending) return <Spinner />;
   if (employees.isError) {
@@ -32,6 +34,7 @@ export function EmployeesScreen() {
   }
 
   const counts = countByFilter(employees.data);
+  const editing = employees.data.find((row) => row.id === editingId);
   if (counts.all === 0) {
     return (
       <div className="mx-4 flex flex-col items-center gap-4 rounded-2xl bg-surface p-10 text-center md:mx-8">
@@ -75,7 +78,13 @@ export function EmployeesScreen() {
         onChange={(event) => setSearch(event.target.value)}
         className="min-h-11 rounded-xl border border-line px-4 outline-none focus:border-brand-purple"
       />
-      <EmployeeList employerId={company.employerId} rows={filterEmployees(employees.data, filter, search)} />
+      <EmployeeList
+        employerId={company.employerId}
+        rows={filterEmployees(employees.data, filter, search)}
+        onEdit={setEditingId}
+      />
+      {/* Looked up in the full list: stays open (with fresh data) when a change moves the person out of the filter. */}
+      {editing && <EmployeeDialog employerId={company.employerId} row={editing} onClose={() => setEditingId(null)} />}
     </div>
   );
 }

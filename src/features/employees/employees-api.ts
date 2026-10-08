@@ -50,3 +50,55 @@ export async function cancelInvite(employerId: string, inviteId: string): Promis
     }),
   );
 }
+
+const employeePath = (employerId: string, employeeId: string) => ({ params: { path: { employerId, employeeId } } });
+
+/** Monthly amount (from the next credit on) and personnel number. */
+export async function updateEmployee(
+  employerId: string,
+  employeeId: string,
+  changes: { monthlyAmountCents?: number; personnelNumber?: string },
+): Promise<void> {
+  unwrap(
+    await api.PATCH('/v1/employer/companies/{employerId}/employees/{employeeId}', {
+      ...employeePath(employerId, employeeId),
+      body: changes,
+    }),
+  );
+}
+
+export async function setLeaving(employerId: string, employeeId: string, lastDay: string): Promise<void> {
+  unwrap(
+    await api.PUT('/v1/employer/companies/{employerId}/employees/{employeeId}/leaving', {
+      ...employeePath(employerId, employeeId),
+      body: { lastDay },
+    }),
+  );
+}
+
+export async function cancelLeaving(employerId: string, employeeId: string): Promise<void> {
+  unwrap(
+    await api.DELETE(
+      '/v1/employer/companies/{employerId}/employees/{employeeId}/leaving',
+      employeePath(employerId, employeeId),
+    ),
+  );
+}
+
+export async function blockEmployee(employerId: string, employeeId: string): Promise<void> {
+  unwrap(
+    await api.PUT(
+      '/v1/employer/companies/{employerId}/employees/{employeeId}/block',
+      employeePath(employerId, employeeId),
+    ),
+  );
+}
+
+export async function unblockEmployee(employerId: string, employeeId: string): Promise<void> {
+  unwrap(
+    await api.DELETE(
+      '/v1/employer/companies/{employerId}/employees/{employeeId}/block',
+      employeePath(employerId, employeeId),
+    ),
+  );
+}

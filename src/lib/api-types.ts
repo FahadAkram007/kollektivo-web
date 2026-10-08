@@ -708,6 +708,54 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/employer/companies/{employerId}/employees/{employeeId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch: operations["EmployeesController_update_v1"];
+        trace?: never;
+    };
+    "/v1/employer/companies/{employerId}/employees/{employeeId}/leaving": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["EmployeesController_setLeaving_v1"];
+        post?: never;
+        delete: operations["EmployeesController_cancelLeaving_v1"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/employer/companies/{employerId}/employees/{employeeId}/block": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put: operations["EmployeesController_block_v1"];
+        post?: never;
+        delete: operations["EmployeesController_unblock_v1"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1195,6 +1243,25 @@ export interface components {
             email: string;
             /** @enum {string} */
             result: "invited" | "already_member" | "already_invited" | "failed";
+        };
+        UpdateEmployeeDto: {
+            /**
+             * @description Monthly credit in cents, 0 – 5000
+             * @example 2500
+             */
+            monthlyAmountCents?: number;
+            /**
+             * @description Empty to remove
+             * @example 10427
+             */
+            personnelNumber?: string;
+        };
+        SetLeavingDto: {
+            /**
+             * @description Last day the balance can be used (German time). A day in the past ends the benefit at once.
+             * @example 2026-12-31
+             */
+            lastDay: string;
         };
     };
     responses: never;
@@ -2323,6 +2390,114 @@ export interface operations {
             path: {
                 employerId: string;
                 inviteId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    EmployeesController_update_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                employerId: string;
+                employeeId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["UpdateEmployeeDto"];
+            };
+        };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    EmployeesController_setLeaving_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                employerId: string;
+                employeeId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["SetLeavingDto"];
+            };
+        };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    EmployeesController_cancelLeaving_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                employerId: string;
+                employeeId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    EmployeesController_block_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                employerId: string;
+                employeeId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    EmployeesController_unblock_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                employerId: string;
+                employeeId: string;
             };
             cookie?: never;
         };

@@ -8,7 +8,15 @@ import type { EmployeeRow } from './employees-api';
 import { InviteActions } from './invite-actions';
 
 /** Table on tablets and computers, compact rows on phones. */
-export function EmployeeList({ employerId, rows }: { employerId: string; rows: EmployeeRow[] }) {
+export function EmployeeList({
+  employerId,
+  rows,
+  onEdit,
+}: {
+  employerId: string;
+  rows: EmployeeRow[];
+  onEdit: (employeeId: string) => void;
+}) {
   if (rows.length === 0) {
     return <p className="rounded-xl bg-surface p-6 text-center text-ink-muted">Keine Einträge.</p>;
   }
@@ -39,7 +47,13 @@ export function EmployeeList({ employerId, rows }: { employerId: string; rows: E
                 <StatusDetail row={row} />
               </td>
               <td className="py-3 text-right tabular-nums">{formatCents(row.monthlyAmountCents)}</td>
-              <td className="py-3">{row.kind === 'invite' && <InviteActions employerId={employerId} row={row} />}</td>
+              <td className="py-3 text-right">
+                {row.kind === 'invite' ? (
+                  <InviteActions employerId={employerId} row={row} />
+                ) : (
+                  <EditButton onClick={() => onEdit(row.id)} />
+                )}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -60,11 +74,23 @@ export function EmployeeList({ employerId, rows }: { employerId: string; rows: E
                 <EmployeeStatus status={row.status} />
               </div>
             </div>
-            {row.kind === 'invite' && <InviteActions employerId={employerId} row={row} />}
+            {row.kind === 'invite' ? (
+              <InviteActions employerId={employerId} row={row} />
+            ) : (
+              <EditButton onClick={() => onEdit(row.id)} />
+            )}
           </li>
         ))}
       </ul>
     </>
+  );
+}
+
+function EditButton({ onClick }: { onClick: () => void }) {
+  return (
+    <button className="self-end text-sm font-medium text-brand-purple hover:underline" onClick={onClick}>
+      Bearbeiten
+    </button>
   );
 }
 
