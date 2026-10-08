@@ -26,10 +26,10 @@ export function DealSection({ profile }: { profile: ShopProfile }) {
       description="z. B. „10 % auf alle Kuchen“. Wird in der App bei Ihrem Laden hervorgehoben."
     >
       {profile.deal && (
-        <div className="bg-surface flex flex-wrap items-center justify-between gap-3 rounded-xl p-4">
+        <div className="flex flex-wrap items-center justify-between gap-3 rounded-xl bg-surface p-4">
           <div>
             <p className="font-bold">{profile.deal.title}</p>
-            <p className="text-ink-muted text-sm">läuft bis {formatDay(berlinDayOf(profile.deal.endsAt))}</p>
+            <p className="text-sm text-ink-muted">läuft bis {formatDay(berlinDayOf(profile.deal.endsAt))}</p>
           </div>
           <Button
             variant="danger"
@@ -68,7 +68,7 @@ export function DealSection({ profile }: { profile: ShopProfile }) {
             min={berlinToday()}
             value={endsOn}
             onChange={(event) => setEndsOn(event.target.value)}
-            className="border-line min-h-12 max-w-xs rounded-xl border px-4 font-normal"
+            className="min-h-12 max-w-xs rounded-xl border border-line px-4 font-normal"
           />
         </label>
         <div className="flex items-center gap-4">

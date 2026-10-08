@@ -39,10 +39,10 @@ export function PendingPayments() {
   const payments = pending.data ?? [];
   return (
     <section aria-label="Zahlungen per gedrucktem QR-Code" className="flex flex-col gap-3">
-      <h2 className="text-ink-muted text-sm font-bold">Gedruckter QR-Code</h2>
+      <h2 className="text-sm font-bold text-ink-muted">Gedruckter QR-Code</h2>
       {result && <AnswerResult {...result} onClose={() => setResult(null)} />}
       {payments.length === 0 && !result && (
-        <p className="bg-surface text-ink-muted rounded-xl p-4 text-sm">
+        <p className="rounded-xl bg-surface p-4 text-sm text-ink-muted">
           Keine offenen Zahlungen. Wenn ein Kunde Ihren gedruckten QR-Code scannt, erscheint die Zahlung hier.
         </p>
       )}
@@ -71,12 +71,12 @@ function PendingCard({ payment, onAnswer }: { payment: PartnerPayment; onAnswer:
 
   if (secondsLeft === 0) return null;
   return (
-    <article className="border-brand-purple flex flex-col gap-3 rounded-xl border-2 bg-white p-4 shadow-sm">
+    <article className="flex flex-col gap-3 rounded-xl border-2 border-brand-purple bg-white p-4 shadow-sm">
       <div className="flex items-baseline justify-between gap-3">
         <p className="text-3xl font-bold tabular-nums">{formatCents(payment.purchaseTotalCents)}</p>
-        <p className="text-ink-muted text-sm tabular-nums">noch {formatSeconds(secondsLeft)}</p>
+        <p className="text-sm text-ink-muted tabular-nums">noch {formatSeconds(secondsLeft)}</p>
       </div>
-      <p className="text-ink-muted text-sm">Stimmt der Betrag mit dem Einkauf überein?</p>
+      <p className="text-sm text-ink-muted">Stimmt der Betrag mit dem Einkauf überein?</p>
       <div className="grid grid-cols-2 gap-3">
         <Button variant="danger" disabled={busy} onClick={() => void answer(false)}>
           Ablehnen
@@ -86,7 +86,7 @@ function PendingCard({ payment, onAnswer }: { payment: PartnerPayment; onAnswer:
         </Button>
       </div>
       {failed && (
-        <p role="alert" className="text-error text-sm">
+        <p role="alert" className="text-sm text-error">
           Keine Verbindung. Bitte erneut versuchen.
         </p>
       )}
@@ -123,7 +123,7 @@ function AnswerResult({
         <p className="text-xl font-bold">{title}</p>
         {detail && <p className="text-sm">{detail}</p>}
       </div>
-      <button className="text-ink-muted text-sm" onClick={onClose} aria-label="Schließen">
+      <button className="text-sm text-ink-muted" onClick={onClose} aria-label="Schließen">
         ✕
       </button>
     </div>

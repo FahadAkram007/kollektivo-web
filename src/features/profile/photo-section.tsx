@@ -22,12 +22,12 @@ export function PhotoSection({ profile }: { profile: ShopProfile }) {
 
   return (
     <SectionCard title="Foto" description="Am besten ein helles Foto Ihres Ladens oder Ihrer Theke im Querformat.">
-      <div className="bg-surface aspect-[16/9] w-full max-w-md overflow-hidden rounded-xl">
+      <div className="aspect-[16/9] w-full max-w-md overflow-hidden rounded-xl bg-surface">
         {profile.imageUrl ? (
           // eslint-disable-next-line @next/next/no-img-element -- photo comes from the API host
           <img src={profile.imageUrl} alt={`Foto von ${profile.name}`} className="size-full object-cover" />
         ) : (
-          <div className="text-ink-muted flex size-full items-center justify-center">Noch kein Foto</div>
+          <div className="flex size-full items-center justify-center text-ink-muted">Noch kein Foto</div>
         )}
       </div>
       <input

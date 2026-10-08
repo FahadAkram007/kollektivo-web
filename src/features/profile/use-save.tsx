@@ -31,10 +31,10 @@ export function useSave(queryKey: readonly unknown[], messages: Record<string, s
 }
 
 export function SaveFeedback({ state }: { state: SaveState }) {
-  if (state.status === 'saved') return <p className="text-success text-sm">✓ Gespeichert</p>;
+  if (state.status === 'saved') return <p className="text-sm text-success">✓ Gespeichert</p>;
   if (state.status === 'failed') {
     return (
-      <p role="alert" className="text-error text-sm">
+      <p role="alert" className="text-sm text-error">
         {state.message}
       </p>
     );

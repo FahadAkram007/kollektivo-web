@@ -484,6 +484,38 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/partner/shops/{partnerId}/members": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["TeamController_list_v1"];
+        put?: never;
+        post: operations["TeamController_add_v1"];
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/partner/shops/{partnerId}/members/{userId}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post?: never;
+        delete: operations["TeamController_remove_v1"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/v1/shops": {
         parameters: {
             query?: never;
@@ -946,6 +978,30 @@ export interface components {
              * @example 2026-12-31
              */
             endsOn?: string;
+        };
+        TeamMemberDto: {
+            userId: string;
+            email: string;
+            firstName: string;
+            lastName: string;
+            /** @enum {string} */
+            role: "owner" | "staff";
+            addedAt: string;
+            /** @description Has signed in at least once (in the portal or the app) */
+            hasSignedIn: boolean;
+            /** @description The signed-in person */
+            isYou: boolean;
+        };
+        AddTeamMemberDto: {
+            /** @example kasse@backstube.example */
+            email: string;
+            firstName: string;
+            lastName: string;
+            /**
+             * @description staff = till and payments; owner = everything
+             * @enum {string}
+             */
+            role: "owner" | "staff";
         };
         FavouritesDto: {
             /** @description Location ids */
@@ -1776,6 +1832,70 @@ export interface operations {
                 };
             };
         };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    TeamController_list_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                partnerId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["TeamMemberDto"][];
+                };
+            };
+        };
+    };
+    TeamController_add_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                partnerId: string;
+            };
+            cookie?: never;
+        };
+        requestBody: {
+            content: {
+                "application/json": components["schemas"]["AddTeamMemberDto"];
+            };
+        };
+        responses: {
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+        };
+    };
+    TeamController_remove_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                partnerId: string;
+                userId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
         responses: {
             204: {
                 headers: {

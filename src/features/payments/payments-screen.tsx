@@ -62,7 +62,7 @@ function PaymentsForLocation() {
         )}
       </div>
       {exportFailed && (
-        <p role="alert" className="text-error text-sm">
+        <p role="alert" className="text-sm text-error">
           Der Export ist fehlgeschlagen. Bitte erneut versuchen.
         </p>
       )}
@@ -113,12 +113,12 @@ function RangeAndLocation({
     <div className="flex flex-wrap items-end gap-3">
       <RangePicker range={range} onChange={onRange} />
       {locations.length > 1 && (
-        <label className="text-ink-muted flex flex-col text-xs">
+        <label className="flex flex-col text-xs text-ink-muted">
           Filiale
           <select
             value={locationChoice}
             onChange={(event) => onLocation(event.target.value)}
-            className="border-line text-ink min-h-10 rounded-lg border bg-white px-2 text-sm"
+            className="min-h-10 rounded-lg border border-line bg-white px-2 text-sm text-ink"
           >
             <option value={ALL_LOCATIONS}>Alle Filialen</option>
             {locations.map((location) => (

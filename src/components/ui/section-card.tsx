@@ -8,10 +8,10 @@ export function SectionCard({
   children: React.ReactNode;
 }) {
   return (
-    <section className="border-line flex flex-col gap-4 rounded-2xl border bg-white p-5">
+    <section className="flex flex-col gap-4 rounded-2xl border border-line bg-white p-5">
       <div>
         <h2 className="text-lg font-bold">{title}</h2>
-        {description && <p className="text-ink-muted text-sm">{description}</p>}
+        {description && <p className="text-sm text-ink-muted">{description}</p>}
       </div>
       {children}
     </section>

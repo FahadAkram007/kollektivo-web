@@ -22,24 +22,24 @@ export function RangePicker({ range, onChange }: { range: DateRange; onChange: (
           </button>
         );
       })}
-      <label className="text-ink-muted flex flex-col text-xs">
+      <label className="flex flex-col text-xs text-ink-muted">
         Von
         <input
           type="date"
           value={range.from}
           max={range.to}
           onChange={(event) => event.target.value && onChange({ ...range, from: event.target.value })}
-          className="border-line text-ink min-h-10 rounded-lg border px-2 text-sm"
+          className="min-h-10 rounded-lg border border-line px-2 text-sm text-ink"
         />
       </label>
-      <label className="text-ink-muted flex flex-col text-xs">
+      <label className="flex flex-col text-xs text-ink-muted">
         Bis
         <input
           type="date"
           value={range.to}
           min={range.from}
           onChange={(event) => event.target.value && onChange({ ...range, to: event.target.value })}
-          className="border-line text-ink min-h-10 rounded-lg border px-2 text-sm"
+          className="min-h-10 rounded-lg border border-line px-2 text-sm text-ink"
         />
       </label>
     </div>

@@ -22,10 +22,10 @@ export function PortalNav() {
 
   return (
     <>
-      <aside className="border-line flex flex-col gap-4 border-b p-4 md:w-60 md:border-r md:border-b-0">
+      <aside className="flex flex-col gap-4 border-b border-line p-4 md:w-60 md:border-r md:border-b-0 print:hidden">
         <div className="flex items-center justify-between md:block">
           <Logo height={28} />
-          <button className="text-ink-muted text-sm md:hidden" onClick={() => void signOut()}>
+          <button className="text-sm text-ink-muted md:hidden" onClick={() => void signOut()}>
             Abmelden
           </button>
         </div>
@@ -38,16 +38,16 @@ export function PortalNav() {
           ))}
         </nav>
         <div className="mt-auto hidden flex-col gap-1 text-sm md:flex">
-          <span className="text-ink-muted truncate">
+          <span className="truncate text-ink-muted">
             {me.firstName} {me.lastName}
           </span>
-          <button className="text-brand-purple text-left hover:underline" onClick={() => void signOut()}>
+          <button className="text-left text-brand-purple hover:underline" onClick={() => void signOut()}>
             Abmelden
           </button>
         </div>
       </aside>
 
-      <nav className="border-line fixed inset-x-0 bottom-0 z-10 flex border-t bg-white md:hidden">
+      <nav className="fixed inset-x-0 bottom-0 z-10 flex border-t border-line bg-white md:hidden print:hidden">
         {items.map((item) => (
           <Link key={item.href} href={item.href} className={`flex-1 py-4 text-center text-sm ${linkClass(item.href)}`}>
             {item.label}

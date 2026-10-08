@@ -58,7 +58,7 @@ export function SignInForm() {
 
       {step === 'email' ? (
         <>
-          <p className="text-ink-muted text-sm">
+          <p className="text-sm text-ink-muted">
             Melden Sie sich mit der E-Mail-Adresse an, an die Ihre Einladung ging. Wir senden Ihnen einen Code.
           </p>
           <TextField
@@ -76,7 +76,7 @@ export function SignInForm() {
         </>
       ) : (
         <>
-          <p className="text-ink-muted text-sm">
+          <p className="text-sm text-ink-muted">
             Wir haben einen 6-stelligen Code an <strong className="text-ink">{email.trim()}</strong> gesendet.
           </p>
           <TextField
@@ -88,14 +88,14 @@ export function SignInForm() {
             autoFocus
             value={code}
             onChange={(event) => setCode(event.target.value.replace(/\D/g, ''))}
-            className="border-line focus:border-brand-purple min-h-14 rounded-xl border px-4 text-center text-2xl tracking-[0.5em] outline-none"
+            className="min-h-14 rounded-xl border border-line px-4 text-center text-2xl tracking-[0.5em] outline-none focus:border-brand-purple"
           />
           <Button type="submit" disabled={busy || code.length !== 6}>
             Anmelden
           </Button>
           <button
             type="button"
-            className="text-brand-purple text-sm underline-offset-2 hover:underline"
+            className="text-sm text-brand-purple underline-offset-2 hover:underline"
             onClick={() => {
               setStep('email');
               setCode('');
@@ -108,7 +108,7 @@ export function SignInForm() {
       )}
 
       {error && (
-        <p role="alert" className="text-error rounded-lg bg-red-50 p-3 text-sm">
+        <p role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-error">
           {error}
         </p>
       )}

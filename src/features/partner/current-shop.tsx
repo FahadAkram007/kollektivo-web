@@ -62,7 +62,7 @@ function readStoredLocation(): string | null {
 
 function NoShopAccess() {
   return (
-    <p className="text-ink-muted p-6 text-center">
+    <p className="p-6 text-center text-ink-muted">
       Ihr Zugang ist keiner Filiale zugeordnet. Bitte wenden Sie sich an support@kollektivo.de.
     </p>
   );

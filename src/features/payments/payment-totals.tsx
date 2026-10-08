@@ -12,8 +12,8 @@ export function PaymentTotals({ totals }: { totals: PaymentsPage['totals'] }) {
   return (
     <dl className="grid grid-cols-3 gap-3">
       {cards.map((card) => (
-        <div key={card.label} className="bg-surface rounded-xl p-3 md:p-4">
-          <dt className="text-ink-muted text-xs md:text-sm">{card.label}</dt>
+        <div key={card.label} className="rounded-xl bg-surface p-3 md:p-4">
+          <dt className="text-xs text-ink-muted md:text-sm">{card.label}</dt>
           <dd className="text-lg font-bold tabular-nums md:text-2xl">{card.value}</dd>
         </div>
       ))}

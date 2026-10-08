@@ -7,7 +7,7 @@ export function OpeningHoursEditor({ days, onChange }: { days: DayHours[]; onCha
   const updateDay = (index: number, day: DayHours) => onChange(days.map((old, i) => (i === index ? day : old)));
 
   return (
-    <div className="divide-line flex flex-col divide-y">
+    <div className="flex flex-col divide-y divide-line">
       {days.map((day, index) => (
         <div key={WEEKDAYS[index]} className="flex flex-wrap items-center gap-x-4 gap-y-2 py-3">
           <label className="flex w-36 items-center gap-2 font-medium">
@@ -15,7 +15,7 @@ export function OpeningHoursEditor({ days, onChange }: { days: DayHours[]; onCha
               type="checkbox"
               checked={day.open}
               onChange={(event) => updateDay(index, { ...day, open: event.target.checked })}
-              className="accent-brand-purple size-5"
+              className="size-5 accent-brand-purple"
             />
             {WEEKDAYS[index]}
           </label>
@@ -23,7 +23,7 @@ export function OpeningHoursEditor({ days, onChange }: { days: DayHours[]; onCha
             <div className="flex flex-wrap items-center gap-2">
               {day.periods.map((period, position) => (
                 <span key={position} className="flex items-center gap-1">
-                  {position > 0 && <span className="text-ink-muted px-1">und</span>}
+                  {position > 0 && <span className="px-1 text-ink-muted">und</span>}
                   <TimeInput
                     label={`${WEEKDAYS[index]} öffnet`}
                     value={period.opens}
@@ -50,7 +50,7 @@ export function OpeningHoursEditor({ days, onChange }: { days: DayHours[]; onCha
               {day.periods.length === 1 ? (
                 <button
                   type="button"
-                  className="text-brand-purple text-sm hover:underline"
+                  className="text-sm text-brand-purple hover:underline"
                   onClick={() => {
                     const [first] = day.periods;
                     updateDay(index, {
@@ -67,7 +67,7 @@ export function OpeningHoursEditor({ days, onChange }: { days: DayHours[]; onCha
               ) : (
                 <button
                   type="button"
-                  className="text-ink-muted text-sm hover:underline"
+                  className="text-sm text-ink-muted hover:underline"
                   onClick={() =>
                     updateDay(index, {
                       ...day,
@@ -96,7 +96,7 @@ function TimeInput({ label, value, onChange }: { label: string; value: string; o
       value={value}
       step={300}
       onChange={(event) => event.target.value && onChange(event.target.value)}
-      className="border-line min-h-10 rounded-lg border px-2 tabular-nums"
+      className="min-h-10 rounded-lg border border-line px-2 tabular-nums"
     />
   );
 }

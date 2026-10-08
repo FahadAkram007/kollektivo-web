@@ -36,8 +36,8 @@ export function AmountStep({
 
   return (
     <div className="mx-auto flex w-full max-w-sm flex-col gap-5">
-      <div className="border-line flex items-end justify-between gap-3 border-b pb-3">
-        <span className="text-ink-muted text-sm">Betrag</span>
+      <div className="flex items-end justify-between gap-3 border-b border-line pb-3">
+        <span className="text-sm text-ink-muted">Betrag</span>
         <output aria-live="polite" className="text-5xl font-bold tabular-nums">
           {formatCents(cents)}
         </output>
@@ -52,7 +52,7 @@ export function AmountStep({
         </Button>
       </div>
       {error && (
-        <p role="alert" className="text-error rounded-lg bg-red-50 p-3 text-sm">
+        <p role="alert" className="rounded-lg bg-red-50 p-3 text-sm text-error">
           {error}
         </p>
       )}

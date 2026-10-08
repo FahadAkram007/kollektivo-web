@@ -41,9 +41,9 @@ export function AboutSection({ profile }: { profile: ShopProfile }) {
               save.reset();
             }}
             placeholder="z. B. Familienbäckerei seit 1952 – frische Brötchen ab 6 Uhr."
-            className="border-line focus:border-brand-purple rounded-xl border p-3 outline-none"
+            className="rounded-xl border border-line p-3 outline-none focus:border-brand-purple"
           />
-          <span className="text-ink-muted self-end text-xs">
+          <span className="self-end text-xs text-ink-muted">
             {description.length}/{MAX_DESCRIPTION}
           </span>
         </div>

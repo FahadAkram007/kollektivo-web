@@ -41,7 +41,7 @@ export function PortalShell({ children }: { children: React.ReactNode }) {
     <CurrentShopProvider me={me.data}>
       <div className="flex flex-1 flex-col md:flex-row">
         <PortalNav />
-        <main className="flex flex-1 flex-col pb-20 md:pb-0">{children}</main>
+        <main className="flex flex-1 flex-col pb-20 md:pb-0 print:p-0">{children}</main>
       </div>
     </CurrentShopProvider>
   );

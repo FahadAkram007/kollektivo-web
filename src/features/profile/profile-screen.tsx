@@ -26,7 +26,7 @@ function ProfileSections() {
   const profile = useQuery(profileQuery(shop.partnerId));
 
   if (profile.isPending) return <Spinner />;
-  if (profile.isError) return <p className="text-ink-muted px-4 md:px-8">Das Profil konnte nicht geladen werden.</p>;
+  if (profile.isError) return <p className="px-4 text-ink-muted md:px-8">Das Profil konnte nicht geladen werden.</p>;
 
   const branch = profile.data.locations.find((candidate) => candidate.id === location.id);
   return (

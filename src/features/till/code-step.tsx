@@ -65,12 +65,12 @@ export function CodeStep({
       <p className="text-4xl font-bold tabular-nums">{formatCents(amountCents)}</p>
       <QrImage value={request.qrPayload} label="QR-Code zum Bezahlen" />
       <div>
-        <p className="text-ink-muted text-sm">oder Code eingeben</p>
+        <p className="text-sm text-ink-muted">oder Code eingeben</p>
         <p className="text-4xl font-bold tracking-widest tabular-nums">
           {request.shortCode.slice(0, 3)} {request.shortCode.slice(3)}
         </p>
       </div>
-      <p className="text-ink-muted text-sm" aria-live="off">
+      <p className="text-sm text-ink-muted" aria-live="off">
         {current?.status === 'used' ? 'Zahlung wird abgeschlossen …' : `Gültig noch ${formatSeconds(secondsLeft)}`}
       </p>
       <Button className="w-full" variant="secondary" onClick={() => void cancel()} disabled={cancelling}>

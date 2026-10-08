@@ -21,7 +21,7 @@ export function LocationSwitcher() {
     <label className="flex flex-col gap-1 text-sm">
       <span className="text-ink-muted">Filiale</span>
       <select
-        className="border-line min-h-11 rounded-lg border bg-white px-3"
+        className="min-h-11 rounded-lg border border-line bg-white px-3"
         value={location.id}
         onChange={(event) => select(event.target.value)}
       >

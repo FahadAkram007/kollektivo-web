@@ -18,7 +18,7 @@ export function NumberPad({ onKey }: { onKey: (key: PadKey) => void }) {
           type="button"
           aria-label={key === 'back' ? 'Letzte Ziffer löschen' : label}
           onClick={() => onKey(key)}
-          className="border-line active:bg-surface h-16 rounded-xl border bg-white text-2xl font-medium md:h-20"
+          className="h-16 rounded-xl border border-line bg-white text-2xl font-medium active:bg-surface md:h-20"
         >
           {label}
         </button>

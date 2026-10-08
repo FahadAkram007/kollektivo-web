@@ -8,13 +8,13 @@ export function PaidResult({ payment, onDone }: { payment: PartnerPayment; onDon
   const rest = payment.purchaseTotalCents - payment.amountCents;
   return (
     <div className="mx-auto flex w-full max-w-sm flex-col items-center gap-5 text-center">
-      <div className="bg-success flex size-24 items-center justify-center rounded-full text-5xl text-white">✓</div>
+      <div className="flex size-24 items-center justify-center rounded-full bg-success text-5xl text-white">✓</div>
       <div>
-        <p className="text-success text-3xl font-bold">Bezahlt · {formatCents(payment.amountCents)}</p>
-        <p className="text-ink-muted mt-1 text-sm">Referenz {payment.reference}</p>
+        <p className="text-3xl font-bold text-success">Bezahlt · {formatCents(payment.amountCents)}</p>
+        <p className="mt-1 text-sm text-ink-muted">Referenz {payment.reference}</p>
       </div>
       {rest > 0 && (
-        <div className="border-warning w-full rounded-xl border-2 bg-amber-50 p-4">
+        <div className="w-full rounded-xl border-2 border-warning bg-amber-50 p-4">
           <p className="text-sm">Das Guthaben hat nicht ganz gereicht.</p>
           <p className="text-2xl font-bold">Restbetrag an der Kasse: {formatCents(rest)}</p>
         </div>

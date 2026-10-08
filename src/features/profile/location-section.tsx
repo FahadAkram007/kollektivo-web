@@ -55,7 +55,7 @@ export function LocationSection({ partnerId, location }: { partnerId: string; lo
           }}
         />
         {problem && (
-          <p role="alert" className="text-error text-sm">
+          <p role="alert" className="text-sm text-error">
             {problem}
           </p>
         )}
