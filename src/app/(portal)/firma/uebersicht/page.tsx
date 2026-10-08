@@ -1,15 +1,15 @@
 import type { Metadata } from 'next';
 
 import { PageHeader } from '@/components/ui/page-header';
+import { MonthsScreen } from '@/features/months/months-screen';
 
 export const metadata: Metadata = { title: 'Übersicht' };
 
-// TODO(hr-panel): built in the next steps of the HR panel plan.
-export default function Page() {
+export default function OverviewPage() {
   return (
     <>
       <PageHeader title="Übersicht" />
-      <p className="px-4 text-ink-muted md:px-8">Folgt in Kürze.</p>
+      <MonthsScreen />
     </>
   );
 }

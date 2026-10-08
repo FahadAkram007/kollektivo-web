@@ -756,6 +756,54 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/v1/employer/companies/{employerId}/months": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["MonthsController_list_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/employer/companies/{employerId}/months/{period}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["MonthsController_detail_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/v1/employer/companies/{employerId}/months/{period}/payroll": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get: operations["MonthsController_payroll_v1"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
@@ -1262,6 +1310,35 @@ export interface components {
              * @example 2026-12-31
              */
             lastDay: string;
+        };
+        MonthSummaryDto: {
+            /** @example 2026-10 */
+            period: string;
+            /** @description Employees who received credit this month */
+            employeeCount: number;
+            /** @description Credited to employees (the tax-free benefit) */
+            creditedCents: number;
+            /** @description Spent at partner shops */
+            spentCents: number;
+            /** @description Unspent, returned to the employer at month end */
+            returnedCents: number;
+            /** @description Still usable (current month) */
+            openCents: number;
+            /** @description The month is over and settled */
+            closed: boolean;
+        };
+        MonthEmployeeDto: {
+            employeeId: string;
+            firstName: string;
+            lastName: string;
+            personnelNumber: string | null;
+            creditedCents: number;
+            /** @description YYYY-MM-DD (German time) */
+            creditedOn: string;
+        };
+        MonthDetailDto: {
+            summary: components["schemas"]["MonthSummaryDto"];
+            employees: components["schemas"]["MonthEmployeeDto"][];
         };
     };
     responses: never;
@@ -2508,6 +2585,72 @@ export interface operations {
                     [name: string]: unknown;
                 };
                 content?: never;
+            };
+        };
+    };
+    MonthsController_list_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                employerId: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MonthSummaryDto"][];
+                };
+            };
+        };
+    };
+    MonthsController_detail_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                employerId: string;
+                period: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": components["schemas"]["MonthDetailDto"];
+                };
+            };
+        };
+    };
+    MonthsController_payroll_v1: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                employerId: string;
+                period: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description CSV file */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "text/csv": string;
+                };
             };
         };
     };
