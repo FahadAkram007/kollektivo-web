@@ -1,0 +1,24 @@
+@import 'tailwindcss';
+
+/* KollektivO brand (styleguide 2026): purple → red gradient, Poppins, white background. Light only for now. */
+@theme {
+  --color-brand-purple: #8f306e;
+  --color-brand-red: #e83b52;
+  --color-ink: #1f1a24;
+  --color-ink-muted: #6b6470;
+  --color-line: #ece8ee;
+  --color-surface: #f7f4f8;
+  --color-success: #1e9e6a;
+  --color-warning: #f2a93b;
+  --color-error: #b42318;
+  --font-sans: var(--font-poppins), system-ui, sans-serif;
+}
+
+@utility bg-brand-gradient {
+  background-image: linear-gradient(90deg, var(--color-brand-purple), var(--color-brand-red));
+}
+
+body {
+  background: #ffffff;
+  color: var(--color-ink);
+}
